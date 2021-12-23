@@ -12,10 +12,32 @@
 	};
 };
 
+&gmac1 {
+	assigned-clocks = <&cru SCLK_GMAC1_RX_TX>, <&cru SCLK_GMAC1>;
+	assigned-clock-parents = <&cru SCLK_GMAC1_RGMII_SPEED>, <&gmac1_clkin>;
+	status = "disabled";
+};
+
 &sdmmc0 {
 	bus-width = <4>;
 	u-boot,dm-spl;
 	u-boot,spl-fifo-mode;
+};
+
+&usb_host0_ehci {
+	vbus-supply = <&vcc5v0_usb20_host>;
+};
+
+&usb_host0_ohci {
+	vbus-supply = <&vcc5v0_usb20_host>;
+};
+
+&usb_host1_ehci {
+	vbus-supply = <&vcc5v0_usb20_host>;
+};
+
+&usb_host1_ohci {
+	vbus-supply = <&vcc5v0_usb20_host>;
 };
 
 &uart2 {

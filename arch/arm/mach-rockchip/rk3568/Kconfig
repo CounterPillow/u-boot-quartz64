@@ -13,6 +13,11 @@ config TARGET_QUARTZ64_A_RK3566
 	help
 	  Quartz64 Model A RK3566 is a development board from Pine64.
 
+config TARGET_PINENOTE_RK3566
+	bool "Pinenote RK3566 E-Ink Linux Tablet"
+	help
+	  Pinenote RK3566 is a E-Ink tablet from Pine64.
+
 endchoice
 
 config ROCKCHIP_BOOT_MODE_REG
@@ -26,5 +31,6 @@ config SYS_MALLOC_F_LEN
 
 source "board/rockchip/evb_rk3568/Kconfig"
 source "board/pine64/quartz64-a-rk3566/Kconfig"
+source "board/pine64/pinenote-rk3566/Kconfig"
 
 endif

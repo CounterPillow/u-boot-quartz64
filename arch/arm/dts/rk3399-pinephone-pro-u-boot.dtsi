@@ -17,6 +17,7 @@
 
 	config {
 		u-boot,spl-payload-offset = <0x60000>; /* @ 384KB */
+		sysreset-gpio = <&gpio1 RK_PA6 GPIO_ACTIVE_HIGH>;
 	};
 };
 

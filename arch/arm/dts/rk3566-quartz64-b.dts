@@ -10,13 +10,13 @@
 #include "rk3566.dtsi"
 
 / {
-	model = "Pine64 RK3566 Quartz64-A Board";
+	model = "Pine64 RK3566 Quartz64-B Board";
 	compatible = "pine64,quartz64-b", "rockchip,rk3566";
 
 	aliases {
+		ethernet0 = &gmac1;
 		mmc0 = &sdmmc0;
 		mmc1 = &sdhci;
-		mmc2 = &sdmmc1;
 	};
 
 	chosen: chosen {
@@ -399,8 +399,6 @@
 
 			vcc3v3_sd: SWITCH_REG2 {
 				regulator-name = "vcc3v3_sd";
-				regulator-always-on;
-				regulator-boot-on;
 			};
 		};
 	};
@@ -546,18 +544,6 @@
 	pinctrl-0 = <&sdmmc1_bus4 &sdmmc1_cmd &sdmmc1_clk &uart9m1_xfer &uart8m1_xfer>;
 	vmmc-supply = <&vcc3v3_sys>;
 	vqmmc-supply = <&vcca1v8_pmu>;
-	status = "okay";
-};
-
-&sdmmc2 {
-	cap-sd-highspeed;
-	cap-sdio-irq;
-	bus-width = <4>;
-	vmmc-supply = <&vcc_3v3>;
-	vqmmc-supply = <&vcca1v8_pmu>;
-	pinctrl-names = "default";
-	pinctrl-0 = <&sdmmc2m0_bus4 &sdmmc2m0_cmd &sdmmc2m0_clk>;
-	sd-uhs-sdr104;
 	status = "okay";
 };
 

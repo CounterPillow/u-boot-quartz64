@@ -18,12 +18,6 @@
 	status = "disabled";
 };
 
-&sdmmc0 {
-	bus-width = <4>;
-	u-boot,dm-spl;
-	u-boot,spl-fifo-mode;
-};
-
 &usb_host0_ehci {
 	vbus-supply = <&vcc5v0_usb20_host>;
 };

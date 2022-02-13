@@ -347,10 +347,10 @@
 	rk817: pmic@20 {
 		compatible = "rockchip,rk817";
 		reg = <0x20>;
-		assigned-clocks = <&cru I2S1_MCLKOUT_TX>;
-		assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>;
-		clocks = <&cru I2S1_MCLKOUT_TX>;
-		clock-names = "mclk";
+//		assigned-clocks = <&cru I2S1_MCLKOUT_TX>;
+//		assigned-clock-parents = <&cru CLK_I2S1_8CH_TX>;
+//		clocks = <&cru I2S1_MCLKOUT_TX>;
+//		clock-names = "mclk";
 		#clock-cells = <1>;
 		interrupt-parent = <&gpio0>;
 		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_LOW>;

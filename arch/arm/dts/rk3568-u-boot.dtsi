@@ -40,10 +40,15 @@
 	status = "okay";
 };
 
+&saradc {
+	u-boot,dm-spl;
+	status = "okay";
+};
+
 &sdmmc0 {
+	bus-width = <4>;
 	u-boot,dm-spl;
 	u-boot,spl-fifo-mode;
-	status = "okay";
 };
 
 &sdhci {
@@ -51,6 +56,8 @@
 	u-boot,dm-spl;
 	u-boot,spl-fifo-mode;
 	mmc-hs200-1_8v;
-	status = "okay";
 };
 
+&sfc {
+	u-boot,dm-spl;
+};

@@ -231,6 +231,8 @@
 
 			vdd_gpu: DCDC_REG2 {
 				regulator-name = "vdd_gpu";
+				regulator-always-on;
+				regulator-boot-on;
 				regulator-min-microvolt = <900000>;
 				regulator-max-microvolt = <1350000>;
 				regulator-init-microvolt = <900000>;
@@ -438,9 +440,9 @@
 &pcie2x1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pcie_reset_h>;
-	reset-gpios = <&gpio0 RK_PB6 GPIO_ACTIVE_HIGH>;
-	status = "okay";
+	reset-gpios = <&gpio1 RK_PB2 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&vcc3v3_pcie>;
+	status = "okay";
 };
 
 &pinctrl {
@@ -616,34 +618,34 @@
 	status = "okay";
 };
 
-&u2phy0_host {
+&usb2phy0_host {
 	phy-supply = <&vcc5v0_usb30_host>;
 	status = "okay";
 };
 
-&u2phy0_otg {
+&usb2phy0_otg {
 	vbus-supply = <&vcc5v0_usb_otg>;
 	status = "okay";
 };
 
-&u2phy1_otg {
+&usb2phy1_otg {
 	phy-supply = <&vcc5v0_usb30_host>;
 	status = "okay";
 };
 
-&u2phy0 {
+&usb2phy0 {
 	status = "okay";
 };
 
-&u2phy1 {
+&usb2phy1 {
 	status = "okay";
 };
 
-&usbdrd30 {
+&usb_host0_xhci {
 	status = "okay";
 };
 
-&usbhost30 {
+&usb_host1_xhci {
 	status = "okay";
 };
 

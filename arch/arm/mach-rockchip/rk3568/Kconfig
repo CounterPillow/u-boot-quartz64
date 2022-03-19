@@ -23,6 +23,11 @@ config TARGET_QUARTZ64_B_RK3566
 	help
 	  Quartz64 Model B RK3566 is a development board from Pine64.
 
+config TARGET_SOQUARTZ_RK3566
+	bool "SoQuartz RK3566 development board"
+	help
+	  SoQuartz RK3566 is a development board from Pine64.
+
 endchoice
 
 config ROCKCHIP_BOOT_MODE_REG
@@ -37,6 +42,7 @@ config SYS_MALLOC_F_LEN
 source "board/rockchip/evb_rk3568/Kconfig"
 source "board/pine64/quartz64-a-rk3566/Kconfig"
 source "board/pine64/quartz64-b-rk3566/Kconfig"
+source "board/pine64/soquartz-rk3566/Kconfig"
 source "board/pine64/pinenote-rk3566/Kconfig"
 
 endif

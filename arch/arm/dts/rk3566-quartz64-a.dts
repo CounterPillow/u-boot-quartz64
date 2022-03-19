@@ -58,7 +58,7 @@
 
 	hdmi-con {
 		compatible = "hdmi-connector";
-		type = "c";
+		type = "a";
 
 		port {
 			hdmi_con_in: endpoint {
@@ -92,21 +92,9 @@
 
 	rk817-sound {
 		compatible = "simple-audio-card";
-		pinctrl-names = "default";
-		pinctrl-0 = <&hp_det_h>;
 		simple-audio-card,format = "i2s";
-		simple-audio-card,hp-det-gpio = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
 		simple-audio-card,name = "Analog RK817";
 		simple-audio-card,mclk-fs = <256>;
-		simple-audio-card,widgets =
-			"Microphone", "Mic Jack",
-			"Headphone", "Headphones",
-			"Speaker", "Speaker";
-		simple-audio-card,routing =
-			"MICL", "Mic Jack",
-			"Headphones", "HPOL",
-			"Headphones", "HPOR",
-			"Speaker", "SPKO";
 
 		simple-audio-card,cpu {
 			sound-dai = <&i2s1_8ch>;
@@ -204,24 +192,14 @@
 	 */
 	vcc5v0_usb20_host: vcc5v0_usb20_host {
 		compatible = "regulator-fixed";
-		regulator-name = "vcc5v0_usb20_host";
 		enable-active-high;
 		gpio = <&gpio4 RK_PB5 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&vcc5v0_usb20_host_en>;
+		regulator-name = "vcc5v0_usb20_host";
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 		vin-supply = <&vcc5v0_usb>;
-	};
-
-	vcc5v0_usb20_otg: vcc5v0_usb20_otg {
-		compatible = "regulator-fixed";
-		regulator-name = "vcc5v0_usb20_otg";
-		enable-active-high;
-		gpio = <&gpio4 RK_PB5 GPIO_ACTIVE_HIGH>;
-		regulator-min-microvolt = <5000000>;
-		regulator-max-microvolt = <5000000>;
-		vin-supply = <&dcdc_boost>;
 	};
 
 	vcc3v3_pcie_p: vcc3v3_pcie_p {
@@ -234,6 +212,16 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		vin-supply = <&vcc_3v3>;
+	};
+
+	vcc5v0_usb20_otg: vcc5v0_usb20_otg {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio4 RK_PB5 GPIO_ACTIVE_HIGH>;
+		regulator-name = "vcc5v0_usb20_otg";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		vin-supply = <&dcdc_boost>;
 	};
 
 	vcc3v3_sd: vcc3v3_sd {
@@ -273,16 +261,6 @@
 		vin-supply = <&vcc_sys>;
 	};
 
-	vcc_lcd_en: vcc_lcd_en {
-		compatible = "regulator-fixed";
-//		gpio = <&gpio2 RK_PC4 GPIO_ACTIVE_HIGH>;
-		regulator-always-on;
-		pinctrl-names = "default";
-		pinctrl-0 = <&vcc_lcd_en_h>;
-		regulator-name = "vcc_lcd_en";
-		vin-supply = <&vcc_sys>;
-	};
-
 	/* sourced from vcc_sys, sdio module operates internally at 3.3v */
 	vcc_wl: vcc_wl {
 		compatible = "regulator-fixed";
@@ -293,13 +271,6 @@
 		regulator-max-microvolt = <3300000>;
 		vin-supply = <&vcc_sys>;
 	};
-
-	backlight: backlight {
-		compatible = "pwm-backlight";
-		pwms = <&pwm14 0 1000000 0>;
-		brightness-levels = <0 4 8 16 32 64 128 255>;
-		default-brightness-level = <6>;
-	};
 };
 
 &combphy1 {
@@ -308,6 +279,10 @@
 };
 
 &combphy2 {
+	status = "okay";
+};
+
+&combphy1 {
 	status = "okay";
 };
 
@@ -370,11 +345,11 @@
 	panel-supply = <&v3p3>;
 	vcom-supply = <&vcom>;
 	vdrive-supply = <&vdrive>;
-	status = "okay";
+	status = "disabled";
 };
 
 &eink {
-	status = "okay";
+	status = "disabled";
 };
 
 &gmac1 {
@@ -411,13 +386,6 @@
 	status = "okay";
 };
 
-&hdmi_in {
-	hdmi_in_vp0: endpoint@0 {
-		reg = <0>;
-		remote-endpoint = <&vp0_out_hdmi>;
-	};
-};
-
 &hdmi_out {
 	hdmi_out_con: endpoint {
 		remote-endpoint = <&hdmi_con_in>;
@@ -441,7 +409,6 @@
 
 		regulator-state-mem {
 			regulator-off-in-suspend;
-			regulator-suspend-microvolt = <900000>;
 		};
 	};
 
@@ -571,7 +538,6 @@
 			};
 
 			vccio_sd: LDO_REG5 {
-				regulator-always-on;
 				regulator-boot-on;
 				regulator-min-microvolt = <1800000>;
 				regulator-max-microvolt = <3300000>;
@@ -699,10 +665,6 @@
 	};
 };
 
-&i2c3 {
-	status = "okay";
-};
-
 &i2s1_8ch {
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2s1m0_sclktx
@@ -788,21 +750,17 @@
 		pmic_int_l: pmic-int-l {
 			rockchip,pins = <0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
+	};
 
-		hp_det_h: hp-det-h {
-			rockchip,pins = <0 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none>;
+	usb2 {
+		vcc5v0_usb20_host_en: vcc5v0-usb20-host-en {
+			rockchip,pins = <4 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
 	sdio-pwrseq {
 		wifi_enable_h: wifi-enable-h {
 			rockchip,pins = <2 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-	};
-
-	usb2 {
-		vcc5v0_usb20_host_en: vcc5v0-usb20-host-en {
-			rockchip,pins = <4 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
 
@@ -817,16 +775,9 @@
 			rockchip,pins = <0 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
-
-	vcc_lcd_en {
-		vcc_lcd_en_h: vcc-lcd-en-h {
-			rockchip,pins = <2 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none>;
-		};
-	};
 };
 
 &pmu_io_domains {
-	status = "okay";
 	pmuio1-supply = <&vcc3v3_pmu>;
 	pmuio2-supply = <&vcc3v3_pmu>;
 	vccio1-supply = <&vccio_acodec>;
@@ -836,30 +787,26 @@
 	vccio5-supply = <&vcc_3v3>;
 	vccio6-supply = <&vcc1v8_dvp>;
 	vccio7-supply = <&vcc_3v3>;
-};
-
-&saradc {
-	vref-supply = <&vcc_1v8>;
 	status = "okay";
 };
 
 /* sata1 is muxed with the usb3 port */
 &sata1 {
 	status = "disabled";
-//	status = "okay";
 };
 
 /* sata2 is muxed with the pcie2 slot*/
 &sata2 {
 	target-supply = <&vcc3v3_pcie_p>;
 	status = "disabled";
-//	status = "okay";
 };
 
 &sdhci {
 	bus-width = <8>;
 	mmc-hs200-1_8v;
 	non-removable;
+	pinctrl-names = "default";
+	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd &emmc_datastrobe>;
 	vmmc-supply = <&vcc_3v3>;
 	vqmmc-supply = <&vcc_1v8>;
 	status = "okay";
@@ -875,10 +822,6 @@
 	sd-uhs-sdr104;
 	vmmc-supply = <&vcc3v3_sd>;
 	vqmmc-supply = <&vccio_sd>;
-	status = "okay";
-};
-
-&spdif {
 	status = "okay";
 };
 
@@ -899,17 +842,27 @@
 };
 
 &sfc {
-	#address-cells = <1>;
-	#size-cells = <0>;
+	pinctrl-0 = <&fspi_pins>;
+	pinctrl-names = "default";
+	rockchip,sfc-no-dma;
 	status = "okay";
 
 	flash@0 {
 		compatible = "jedec,spi-nor";
 		reg = <0>;
 		spi-max-frequency = <50000000>;
-		spi-rx-bus-width = <4>;
+		spi-rx-bus-width = <1>;
 		spi-tx-bus-width = <1>;
 	};
+};
+
+&spdif {
+	status = "okay";
+};
+
+&spi1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi1m1_cs0 &spi1m1_pins>;
 };
 
 &tsadc {
@@ -950,44 +903,6 @@
 	status = "okay";
 };
 
-&u2phy0 {
-	status = "okay";
-};
-
-&u2phy0_host {
-	phy-supply = <&vcc5v0_usb20_host>;
-	status = "okay";
-};
-
-&u2phy0_otg {
-	phy-supply = <&vcc5v0_usb20_otg>;
-	status = "okay";
-};
-
-&u2phy1 {
-	status = "okay";
-};
-
-&u2phy1_host {
-	phy-supply = <&vcc5v0_usb20_host>;
-	status = "okay";
-};
-
-&u2phy1_otg {
-	phy-supply = <&vcc5v0_usb20_host>;
-	status = "okay";
-};
-
-&usbdrd30 {
-	status = "okay";
-};
-
-/* usb3 controller is muxed with sata1 */
-&usbhost30 {
-//	status = "disabled";
-	status = "okay";
-};
-
 &usb_host0_ehci {
 	status = "okay";
 };
@@ -1004,6 +919,43 @@
 	status = "okay";
 };
 
+&usb_host0_xhci {
+	status = "okay";
+};
+
+/* usb3 controller is muxed with sata1 */
+&usb_host1_xhci {
+	status = "okay";
+};
+
+&usb2phy0 {
+	status = "okay";
+};
+
+&usb2phy0_host {
+	phy-supply = <&vcc5v0_usb20_host>;
+	status = "okay";
+};
+
+&usb2phy0_otg {
+	phy-supply = <&vcc5v0_usb20_otg>;
+	status = "okay";
+};
+
+&usb2phy1 {
+	status = "okay";
+};
+
+&usb2phy1_host {
+	phy-supply = <&vcc5v0_usb20_host>;
+	status = "okay";
+};
+
+&usb2phy1_otg {
+	phy-supply = <&vcc5v0_usb20_host>;
+	status = "okay";
+};
+
 &vop {
 	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP1>;
 	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>;
@@ -1014,71 +966,16 @@
 	status = "okay";
 };
 
+&hdmi_in {
+	hdmi_in_vp0: endpoint@0 {
+		reg = <0>;
+		remote-endpoint = <&vp0_out_hdmi>;
+	};
+};
+
 &vp0 {
 	vp0_out_hdmi: endpoint@RK3568_VOP2_EP_HDMI {
 		reg = <RK3568_VOP2_EP_HDMI>;
 		remote-endpoint = <&hdmi_in_vp0>;
 	};
 };
-/*
-&video_phy0 {
-	status = "okay";
-};
-
-&dsi0 {
-	status = "okay";
-	clock-master;
-
-	mipi_panel: panel@0 {
-		compatible = "feiyang,fy07024di26a30d";
-		reg = <0>;
-		backlight = <&backlight>;
-		reset-gpios = <&gpio2 RK_PC4 GPIO_ACTIVE_HIGH>;
-		width-mm = <154>;
-		height-mm = <86>;
-		rotation = <0>;
-//		avdd-supply = <&avdd>;
-//		dvdd-supply = <&vcc3v3_s0>;
-
-		ports {
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			port@0 {
-				reg = <0>;
-
-				mipi_in_panel: endpoint {
-					remote-endpoint = <&mipi_out_panel>;
-				};
-			};
-		};
-	};
-};
-
-&dsi0_in {
-	dsi0_in_vp1: endpoint@1 {
-		reg = <1>;
-		remote-endpoint = <&vp1_out_dsi0>;
-	};
-};
-
-&dsi0_out {
-	mipi_out_panel: endpoint {
-		remote-endpoint = <&mipi_in_panel>;
-	};
-
-};
-
-&vp1 {
-	vp1_out_dsi0: endpoint@RK3568_VOP2_EP_MIPI0 {
-		reg = <RK3568_VOP2_EP_MIPI0>;
-		remote-endpoint = <&dsi0_in_vp1>;
-	};
-};
-
-&pwm14 {
-	status = "okay";
-	pinctrl-0 = <&pwm14m1_pins>;
-	pinctrl-names = "default";
-};
-*/

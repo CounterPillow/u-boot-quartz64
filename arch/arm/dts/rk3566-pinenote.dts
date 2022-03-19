@@ -7,6 +7,7 @@
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/leds/common.h>
 #include <dt-bindings/pinctrl/rockchip.h>
+#include <dt-bindings/usb/pd.h>
 
 #include "rk3566.dtsi"
 
@@ -596,17 +597,18 @@
 		interrupts = <RK_PA4 IRQ_TYPE_LEVEL_LOW>;
 		pinctrl-0 = <&tcpc_int_l>;
 		pinctrl-names = "default";
-		/* FIXME: this is supposed to go in the connector node. */
-		vbus-supply = <&otg_switch>;
 
 		connector {
 			compatible = "usb-c-connector";
 			label = "USB-C";
 			power-role = "dual";
-			try-power-role = "sink";
+			try-power-role = "source";
 			data-role = "dual";
 			typec-power-opmode = "default";
-			pd-disable;
+			vbus-supply = <&otg_switch>;
+			source-pdos = <PDO_FIXED(5000, 2000, PDO_FIXED_USB_COMM)>;
+			sink-pdos = <PDO_FIXED(5000, 2000, PDO_FIXED_USB_COMM)>;
+//			pd-disable;
 
 			ports {
 				#address-cells = <0x01>;
@@ -848,7 +850,7 @@
 
 	tcpc {
 		tcpc_int_l: tcpc-int-l {
-			rockchip,pins = <0 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
+			rockchip,pins = <0 RK_PA4 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
 
@@ -884,7 +886,7 @@
 	vccio4-supply = <&vcca_1v8_pmu>;
 	vccio5-supply = <&vcc_3v3>;
 	vccio6-supply = <&vcc_3v3>;
-	vccio7-supply = <&vcc_1v8>;
+	vccio7-supply = <&vcc_3v3>;
 	status = "okay";
 };
 
@@ -928,7 +930,11 @@
 	status = "okay";
 };
 
-&u2phy0 {
+&usb2phy0 {
+	status = "okay";
+};
+
+&usb2phy0_otg {
 	status = "okay";
 
 	port {
@@ -936,10 +942,6 @@
 			remote-endpoint = <&usbc_hs>;
 		};
 	};
-};
-
-&u2phy0_otg {
-	status = "okay";
 };
 
 &uart1 {
@@ -966,7 +968,7 @@
 	status = "okay";
 };
 
-&usbdrd30 {
-	dr_mode = "host";
+&usb_host0_xhci {
+	dr_mode = "otg";
 	status = "okay";
 };

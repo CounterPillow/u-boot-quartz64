@@ -6,6 +6,13 @@ config TARGET_EVB_RK3568
 	help
 	  RK3568 EVB is a evaluation board for Rockchp RK3568.
 
+config TARGET_SOQUARTZ_BLADE_RK3566
+	bool "PINE64 SOQuartz in Blade carrier board"
+	select BOARD_LATE_INIT
+	help
+	  The PINE64 SOQuartz Blade board is a carrier board for the
+	  PINE64 SOQuartz CM4 compute module.
+
 config ROCKCHIP_BOOT_MODE_REG
 	default 0xfdc20200
 
@@ -19,5 +26,6 @@ config SYS_MALLOC_F_LEN
 	default 0x2000
 
 source "board/rockchip/evb_rk3568/Kconfig"
+source "board/pine64/soquartz-blade-rk3566/Kconfig"
 
 endif

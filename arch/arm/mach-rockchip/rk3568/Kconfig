@@ -13,6 +13,13 @@ config TARGET_SOQUARTZ_BLADE_RK3566
 	  The PINE64 SOQuartz Blade board is a carrier board for the
 	  PINE64 SOQuartz CM4 compute module.
 
+config TARGET_SOQUARTZ_CM4IO_RK3566
+	bool "PINE64 SOQuartz in CM4IO carrier board"
+	select BOARD_LATE_INIT
+	help
+	  The SOQuartz Module but placed in a Raspberry Pi CM4 IO
+	  carrier board.
+
 config TARGET_SOQUARTZ_MODEL_A_RK3566
 	bool "PINE64 SOQuartz in Model A carrier board"
 	select BOARD_LATE_INIT
@@ -34,6 +41,7 @@ config SYS_MALLOC_F_LEN
 
 source "board/rockchip/evb_rk3568/Kconfig"
 source "board/pine64/soquartz-blade-rk3566/Kconfig"
+source "board/pine64/soquartz-cm4io-rk3566/Kconfig"
 source "board/pine64/soquartz-model-a-rk3566/Kconfig"
 
 endif

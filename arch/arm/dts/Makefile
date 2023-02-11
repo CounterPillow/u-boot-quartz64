@@ -166,7 +166,8 @@ dtb-$(CONFIG_ROCKCHIP_RK3399) += \
 
 dtb-$(CONFIG_ROCKCHIP_RK3568) += \
 	rk3568-evb.dtb \
-	rk3566-soquartz-blade.dtb
+	rk3566-soquartz-blade.dtb \
+	rk3566-soquartz-model-a.dtb
 
 dtb-$(CONFIG_ROCKCHIP_RV1108) += \
 	rv1108-elgin-r1.dtb \

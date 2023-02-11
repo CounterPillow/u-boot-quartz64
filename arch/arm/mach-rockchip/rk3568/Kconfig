@@ -6,6 +6,12 @@ config TARGET_EVB_RK3568
 	help
 	  RK3568 EVB is a evaluation board for Rockchp RK3568.
 
+config TARGET_QUARTZ64_A_RK3566
+	bool "PINE64 Quartz64 Model A"
+	help
+	  The PINE64 Quartz64 Model A is a single board computer based
+	  on the Rockchip RK3566 SoC.
+
 config TARGET_SOQUARTZ_BLADE_RK3566
 	bool "PINE64 SOQuartz in Blade carrier board"
 	select BOARD_LATE_INIT
@@ -40,6 +46,7 @@ config SYS_MALLOC_F_LEN
 	default 0x2000
 
 source "board/rockchip/evb_rk3568/Kconfig"
+source "board/pine64/quartz64-a-rk3566/Kconfig"
 source "board/pine64/soquartz-blade-rk3566/Kconfig"
 source "board/pine64/soquartz-cm4io-rk3566/Kconfig"
 source "board/pine64/soquartz-model-a-rk3566/Kconfig"

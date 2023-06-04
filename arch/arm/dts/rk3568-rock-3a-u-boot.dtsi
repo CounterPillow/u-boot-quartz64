@@ -68,3 +68,8 @@
 	bootph-all;
 	status = "okay";
 };
+
+&vcc5v0_usb_host {
+	/* Workaround until regulator implement basic reference counter */
+	regulator-always-on;
+};

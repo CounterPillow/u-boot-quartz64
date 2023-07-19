@@ -24,7 +24,7 @@
 	"fdtoverlay_addr_r=0x02000000\0"	\
 	"kernel_addr_r=0x02080000\0"	\
 	"ramdisk_addr_r=0x0a200000\0"	\
-	"kernel_comp_addr_r=0x08000000\0"	\
+	"kernel_comp_addr_r=0x0f000000\0"	\
 	"kernel_comp_size=0x2000000\0"
 
 #define CFG_EXTRA_ENV_SETTINGS		\
